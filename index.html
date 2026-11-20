@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#eee7dc">
+<title>KAI — personal archive</title>
+<style>
+:root{--paper:#eee7dc;--ink:#30251f;--muted:#8a796b;--line:#d7cabb;--brown:#765b48}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Times New Roman",serif}
+main{max-width:780px;margin:auto;padding:34px 22px 70px}
+.top{display:flex;justify-content:space-between;align-items:center;font:11px Arial,sans-serif;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.hero{padding:70px 0 48px;border-bottom:1px solid var(--line)}
+.eyebrow{font:11px Arial,sans-serif;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+h1{font-size:clamp(58px,13vw,104px);font-weight:400;letter-spacing:-5px;line-height:.9;margin:18px 0}
+.intro{font-size:17px;color:#756457;line-height:1.7;max-width:450px}
+.section{padding:38px 0;border-bottom:1px solid var(--line)}
+.section-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px}
+h2{font-size:27px;font-weight:400;margin:0}
+.small{font:10px Arial,sans-serif;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.love-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.love-card{border:1px solid var(--line);background:rgba(255,255,255,.22);padding:20px;text-align:left;color:var(--ink);font:24px Georgia,serif;min-height:112px;cursor:pointer;transition:.2s}
+.love-card:hover{background:#e5d9ca;transform:translateY(-2px)}
+.love-card span{display:block;font:10px Arial,sans-serif;letter-spacing:2px;color:var(--muted);margin-bottom:18px}
+.love-card .arrow{float:right;color:#9b8674}
+.note{font-size:13px;color:var(--muted);line-height:1.6}
+.music-shell{margin-top:18px;padding:18px;border:1px solid rgba(255,255,255,.72);border-radius:24px;background:linear-gradient(135deg,rgba(255,255,255,.74),rgba(255,255,255,.25));box-shadow:0 12px 32px rgba(71,48,31,.10),inset 0 1px 0 rgba(255,255,255,.9);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);display:none}
+.music-top{display:flex;gap:14px;align-items:center}
+.disc{width:54px;height:54px;border-radius:14px;background:linear-gradient(145deg,#d5c3b1,#8c6c56);display:grid;place-items:center;color:white;font-size:22px;flex-shrink:0}
+.song-title{font:16px Arial,sans-serif;font-weight:600}
+.song-artist{font:12px Arial,sans-serif;color:#796a5f;margin-top:5px}
+.player-frame{width:100%;height:110px;border:0;border-radius:14px;margin-top:14px;background:rgba(70,50,35,.08)}
+.music-hint{font:10px Arial,sans-serif;color:#796a5f;margin-top:9px;letter-spacing:.5px}
+footer{padding:28px 0;color:var(--muted);font:10px Arial,sans-serif;letter-spacing:2px;text-transform:uppercase}
+.modal{position:fixed;inset:0;background:rgba(24,19,16,.78);display:none;align-items:center;justify-content:center;padding:18px;z-index:5}
+.modal.show{display:flex}
+.modal-card{position:relative;width:min(680px,100%);max-height:90vh;background:#eee7dc;padding:12px;border-radius:16px;box-shadow:0 20px 70px #0006}
+.modal-card img,.modal-card video{display:block;width:100%;max-height:78vh;object-fit:contain;border-radius:9px;background:#181818}
+.close{position:absolute;right:19px;top:19px;width:38px;height:38px;border:0;border-radius:50%;background:rgba(25,22,20,.78);color:white;font:22px Arial;z-index:2;cursor:pointer}
+@media(max-width:520px){main{padding:25px 18px 50px}.hero{padding:60px 0 38px}.love-list{grid-template-columns:1fr 1fr}.love-card{font-size:21px;min-height:100px;padding:15px}}
+</style>
+</head>
+<body>
+<main>
+  <div class="top"><span>KAI / PERSONAL ARCHIVE</span><span>EST. 2026</span></div>
+  <header class="hero">
+    <div class="eyebrow">A little place on the internet</div>
+    <h1>hello,<br>I'm Kai.</h1>
+    <p class="intro">A collection of things I like, moments I keep, and little pieces of me.</p>
+  </header>
+  <section class="section">
+    <div class="section-head"><h2>Things I love</h2><span class="small">01 — 03</span></div>
+    <div class="love-list">
+      <button class="love-card" onclick="openModal('mlbb')"><span>01 / GAME</span>Mobile Legends <b class="arrow">↗</b></button>
+      <button class="love-card" onclick="openModal('manhwa')"><span>02 / WATCH</span>Manhwa <b class="arrow">↗</b></button>
+      <button class="love-card" onclick="playRandom()"><span>03 / LISTEN</span>Music <b class="arrow">↗</b></button>
+    </div>
+    <div class="music-shell" id="musicShell">
+      <div class="music-top"><div class="disc">♫</div><div><div class="song-title" id="songTitle">Now playing</div><div class="song-artist" id="songArtist"></div></div></div>
+      <iframe class="player-frame" id="songPlayer" title="Music player" allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <div class="music-hint">A random song from my little playlist · tap Music again for another</div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="section-head"><h2>About me</h2><span class="small">A small introduction</span></div>
+    <p class="intro">Welcome to my little corner. Feel free to look around.</p>
+  </section>
+  <footer>Made with care · KAI</footer>
+</main>
+
+<div class="modal" id="modal" onclick="outsideClose(event)">
+  <div class="modal-card">
+    <button class="close" aria-label="Close" onclick="closeModal()">×</button>
+    <img id="mlbbImage" src="assets/mlbb.jpg" alt="Mobile Legends match results" style="display:none">
+    <video id="manhwaVideo" src="assets/manhwa.mp4" controls playsinline style="display:none"></video>
+  </div>
+</div>
+<script>
+const songs=[
+ {title:"Fortnight",artist:"Taylor Swift",id:"q3zqJs7JUCQ"},
+ {title:"About You",artist:"The 1975",id:"tGv7CUutzqU"},
+ {title:"Merry Christmas, Please Don't Call",artist:"Bleachers",id:"aBpYk9vuneE"},
+ {title:"Let You Break My Heart Again",artist:"Laufey",id:"YJNPleUqtwc"},
+ {title:"Secret Door",artist:"Arctic Monkeys",id:null}
+];
+let previous=-1;
+function playRandom(){
+ let n=Math.floor(Math.random()*songs.length);
+ if(songs.length>1&&n===previous)n=(n+1+Math.floor(Math.random()*(songs.length-1)))%songs.length;
+ previous=n;
+ const s=songs[n],shell=document.getElementById('musicShell');
+ shell.style.display='block';
+ document.getElementById('songTitle').textContent=s.title;
+ document.getElementById('songArtist').textContent=s.artist;
+ const frame=document.getElementById('songPlayer');
+ if(s.id){frame.src='https://www.youtube-nocookie.com/embed/'+s.id+'?autoplay=1&playsinline=1&rel=0';}
+ else {frame.src='https://open.spotify.com/embed/track/4dtP86vkhzwNXCFpCtizce?utm_source=generator';}
+ shell.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function openModal(which){
+ const modal=document.getElementById('modal'),img=document.getElementById('mlbbImage'),video=document.getElementById('manhwaVideo');
+ modal.classList.add('show');
+ img.style.display=which==='mlbb'?'block':'none';
+ video.style.display=which==='manhwa'?'block':'none';
+ if(which==='manhwa'){video.currentTime=0;video.play().catch(()=>{});}
+}
+function closeModal(){
+ const modal=document.getElementById('modal'),video=document.getElementById('manhwaVideo');
+ video.pause();video.currentTime=0;modal.classList.remove('show');
+}
+function outsideClose(e){if(e.target.id==='modal')closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
+</body>
+</html>
